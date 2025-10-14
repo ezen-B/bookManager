@@ -36,6 +36,39 @@ header nav ul {
   justify-content: center;
   gap: 20px;
 }
+header h2 {
+  padding: 20px 0;
+  text-align: center;
+}
+header nav {
+  margin-bottom: 30px;
+}
+header nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+header nav ul li {
+  background-color: #fff;
+  border: 1px solid #222;
+}
+header nav ul li a {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  text-decoration: none;
+  color: #222;
+  display: block;
+}
+header nav ul li:hover {
+  background-color: #222;
+  border: 1px solid #222;
+}
+header nav ul li:hover a {
+  color: #fff;
+}
 #content {
   flex: 1;
   margin: 0 auto;
