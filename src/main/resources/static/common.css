@@ -74,6 +74,81 @@ header nav ul li:hover a {
   margin: 0 auto;
   width: 1000px;
 }
+#content h3 {
+  padding: 20px;
+  text-align: center;
+}
+
+#content table {
+  margin: 0 auto;
+  border-top: 2px solid #222;;
+}
+#content table caption {
+  padding-bottom: 10px;
+  text-align: right;
+}
+#content table input[type=button] {
+  padding: 0 10px;
+  width: auto;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  background: #222;
+  border: 1px solid #222;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 0 3px #999;
+  cursor: pointer;
+}
+#content table td input[type=button]:nth-child(odd) {
+  background: #666;
+  border: 1px solid #222;
+}
+#content table td input[type=button]:nth-child(even) {
+  background: #aaa;
+  border: 1px solid #666;
+}
+#content table td input[type=button]:hover {
+  background: #222;
+  border: 1px solid #222;
+}
+#content table th,
+#content table td {
+  padding: 0 5px;
+  line-height: 30px;
+  border-bottom: 1px solid #aaa;
+  font-weight: 400;
+}
+#content table tr:last-child th,
+#content table tr:last-child td {
+  border-bottom: 1px solid #222;
+}
+#content table .btnWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+#content table + .btnWrap {
+  margin-top: 20px;
+  text-align: center;
+}
+#content table + .btnWrap input[type=button],
+#content table + .btnWrap input[type=submit] {
+  padding: 0 10px;
+  width: auto;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  background: #222;
+  border: 1px solid #222;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 0 3px #999;
+  cursor: pointer;
+}
 footer {
   flex: 0;
   width: 100%;

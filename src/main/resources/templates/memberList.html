@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/default"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  table {
+    width: 600px;
+  }
+  table td:not(:first-child) {
+    text-align: center;
+  }
+</style>
+<script>
+  function add() {
+    location="addMember";
+  }
+</script>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <h3>관리자 목록</h3>
+  <table>
+    <caption>
+      <input th:if="${session.level >= 80}" type="button" value="관리자추가" onclick="add()">
+    </caption>
+    <colgroup>
+      <col width="*">
+      <col width="150px">
+      <col width="80px">
+      <col width="150px" th:if="${session.level==100}">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>이름</th>
+        <th>아이디</th>
+        <th>레벨</th>
+        <th th:if="${session.level==100}">수정/삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="mdto:${mlist}">
+        <td th:text="${mdto.name}"></td>
+        <td th:text="${mdto.userid}"></td>
+        <td th:text="${mdto.level}"></td>
+        <td th:if="${session.level==100}">
+          <div class="btnWrap">
+            <input type="button" value="수정" th:onclick="|location='@{upMember(id=${mdto.id})}'|">
+            <input type="button" value="삭제" th:onclick="|location='@{delMember(id=${mdto.id})}'|">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</th:block>
+</body>
+</html>
