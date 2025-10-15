@@ -7,6 +7,7 @@
     where userid=#{userid} and pwd=#{pwd}
   </select>
 
+
   <select id="memberList" resultType="com.example.demo.AdminMemberDto">
     select * from adminMember
     order by level desc
@@ -39,4 +40,32 @@
     from adminMember
     where userid=#{userid}
   </select>
+
+  <select id="couponList" resultType="com.example.demo.CouponDto">
+    select * from coupon order by writeday desc
+  </select>
+
+  <select id="getDae" resultType="com.example.demo.DaeDto">
+    select * from dae order by id asc
+  </select>
+
+  <select id="getCode" resultType="Integer">
+    select ifnull(max(right(code,3)),0)+1 from coupon where code like concat(#{code},'%')
+  </select>
+
+  <insert id="couponOk" parameterType="com.example.demo.CouponDto">
+    insert into coupon(scope,halin,gigan,afterDay,code,writeday)
+    values(#{scope},#{halin},#{gigan},#{afterDay},#{code},now())
+  </insert>
+  
+  <delete id="delCoupon">
+    delete from coupon where id=#{id}
+  </delete>
+
+  <update id="upCoupon" parameterType="com.example.demo.CouponDto">
+    update coupon set scope=#{scope}, halin=#{halin}, gigan=#{gigan}, afterDat=#{afterDay}
+    where id=#{id}
+  </update>
+
+
 </mapper>
