@@ -2,4 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.ManagerMapper">
 
+  <select id="couponList" resultType="com.example.demo.CouponDto">
+    select * from coupon order by writeday desc
+  </select>
+
+  <select id="getDae" resultType="com.example.demo.DaeDto">
+    select * from dae order by id asc
+  </select>
+
+  <select id="getCode" resultType="Integer">
+    select ifnull(max(right(code,3)),0)+1 from coupon where code like concat(#{code},'%')
+  </select>
+
+  <insert id="couponOk" parameterType="com.example.demo.CouponDto">
+    insert into coupon(scope,halin,gigan,afterDay,code,writeday)
+    values(#{scope},#{halin},#{gigan},#{afterDay},#{code},now())
+  </insert>
+  
+  <delete id="delCoupon">
+    delete from coupon where id=#{id}
+  </delete>
+
+  <update id="upCoupon" parameterType="com.example.demo.CouponDto">
+    update coupon set scope=#{scope}, halin=#{halin}, gigan=#{gigan}, afterDat=#{afterDay}
+    where id=#{id}
+  </update>
+
 </mapper>
