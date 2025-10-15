@@ -37,7 +37,7 @@ header nav ul {
   gap: 20px;
 }
 header h2 {
-  padding: 20px 0;
+  padding: 50px 0 30px;
   text-align: center;
 }
 header nav {
@@ -82,4 +82,24 @@ footer {
   text-align: center;
   background-color: #e2e2e2;
   font-size: 14px;
+  position: relative;
+}
+footer .btnLogout {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+footer .btnLogout input[type=button] {
+  width: 60px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  background: #222;
+  border: 1px solid #222;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 0 5px #999;
+  cursor: pointer;
 }

@@ -11,8 +11,10 @@
 </head>
 <body> <!-- default.html -->
   <div id="wrap">
-    <header>
-      <h2>관리페이지</h2>
+    <!-- 로그인 후 -->
+    <header th:if="${session.level != null}">
+      
+      <h2><b th:text="${session.name+'님'}"></b>의 관리자 페이지입니다.</h2>
       <nav>
         <ul>
           <li><a href="jumunCheck">입고관리</a></li>
@@ -29,6 +31,9 @@
     
     <footer>
       ⓒ 2025 ezen-B Corp.
+      <p class="btnLogout" th:if="${session.level != null}">
+        <input type="button" value="logout" onclick="location='logout'"> 
+      </p>
     </footer>
   </div>
 </body>
