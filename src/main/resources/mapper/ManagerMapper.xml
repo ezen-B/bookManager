@@ -69,7 +69,7 @@
 
   <insert id="jumunOk">
     insert into jumun(pcode,su,jumunMan,writeday)
-    values(#{pcode},#{su},#{jumunMan},now())
+    values(#{pcode},#{su},#{userid},now())
   </insert>
 
   <select id="jumunList" resultType="HashMap">

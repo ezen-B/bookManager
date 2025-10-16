@@ -47,28 +47,36 @@
     cursor: pointer;
   }
 </style>
-<script>
+<script th:inline="javascript">
   function jumun(pcode,n)
   {
      var su=document.getElementsByClassName("su")[n].value;
-     location="jumunOk?pcode="+pcode+"&su="+su+"&dae="+"[[${dae}]]"+"&page="+"[[${page}]]"+"&rec="+"[[${rec}]]";
+     location = "jumunOk?pcode=" + pcode + "&su=" + su + "&dae=" + [[${dae}]] + "&page=" + [[${page}]] + "&rec=" + [[${rec}]];
   }
 
   window.onload=function()
   {
-    document.getElementById("cla").value='[[${dae}]]';
-    document.getElementById("pageSel").value='[[${page}]]';
-    document.getElementById("pageRec").value='[[${rec}]]';
+    // document.getElementById("cla").value = /*[[${dae}]]*/ 'A1';
+    // document.getElementById("pageSel").value='[[${page}]]';
+    // document.getElementById("pageRec").value='[[${rec}]]';
+    document.getElementById("cla").value = /*[[${dae}]]*/ 'A1';
+    document.getElementById("pageSel").value = /*[[${page}]]*/ '1';
+    document.getElementById("pageRec").value = /*[[${rec}]]*/ '10';
   }
 
-  function pageMove()
+  function pageMove(selectedPage)
   {
-    location="stockView?page="+page+"&dae="+"[[${dae}]]"+"&rec="+"[[${rec}]]";
+    // location = "stockView?page=" + selectedPage + "&dae=" + "[[${dae}]]" + "&rec=" + document.getElementById("pageRec").value;
+    var dae = document.getElementById("cla").value;
+    var rec = document.getElementById("pageRec").value;
+      location = "stockView?page=" + selectedPage + "&dae=" + dae + "&rec=" + rec;
   }
 
   function recChange(rec)
   {
-    location="stockView?rec="+rec+"&dae="+'[[${dae}]]';
+    var dae = document.getElementById("cla").value;
+    var page = document.getElementById("pageSel").value;
+    location = "stockView?rec=" + rec + "&dae=" + dae + "&page=" + page;
   }
 
   function viewJumun()
@@ -115,7 +123,8 @@
 
         document.getElementById("jumunLayer").innerHTML=str;
     }
-    chk.open("get","jumunList?dae="+'[[${dae}]]');
+   // chk.open("get","jumunList?dae="+'[[${dae}]]');
+    chk.open("get","jumunList?dae=" + '\'' + [[${dae}]] + '\'');
     chk.send();
   }
   
@@ -129,15 +138,22 @@
   <th:block layout:fragment="content">
     <div id="jumunLayer"></div>
     <h3> 상품현황 </h3>
-    
+    <p>현재 페이지: [[${page}]]</p>
+    <p>한 페이지당 목록 수: [[${rec}]]</p>
     <div class="caption">
       <div id="daeclass">
         카테고리
-        <select id="cla" onchange="location='stockView?dae='+this.value">
+        <!-- <select id="cla" onchange="location='stockView?dae='+this.value">
           <option value="A1">소설/문학</option>
           <option value="B1">비소설/교양</option>
           <option value="C1">경제/경영</option>
           <option value="D1">과학/기술</option>
+        </select> -->
+        <select id="cla" onchange="location='stockView?dae='+this.value">
+         <option value="A1" th:selected="${dae == 'A1'}">소설/문학</option>
+         <option value="B1" th:selected="${dae == 'B1'}">비소설/교양</option>
+         <option value="C1" th:selected="${dae == 'C1'}">경제/경영</option>
+         <option value="D1" th:selected="${dae == 'D1'}">과학/기술</option>
         </select>
         <input type="button" value="주문내역" onclick="viewJumun()">
       </div>
@@ -189,7 +205,7 @@
                 <option th:value="${i}" th:text="${i}"></option>
               </th:block>
             </select>
-            <input type="button" value="주문" th:attr="|jumun('${pdto.pcode}', ${sts.index})|">
+            <input type="button" value="주문" th:attr="onclick=|jumun('${pdto.pcode}', ${sts.index})|">
           </td>
           <td>
             <th:block th:if="${pdto.writeday!=null}">

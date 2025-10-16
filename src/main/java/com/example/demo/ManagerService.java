@@ -224,7 +224,7 @@ public String upCoupon(CouponDto cdto)
 	return "redirect:/couponList";
 }
 
-public String jumunOk(HttpSession session, String pcode, int su, int dae, int page, int rec) 
+public String jumunOk(HttpSession session, String pcode, int su, String dae, int page, int rec) 
 {
   // jumun테이블에 저장
   String userid=session.getAttribute("userid").toString();
@@ -244,23 +244,25 @@ public String stockView(HttpServletRequest request, Model model, int page, int r
 {
   int index=(page-1)*rec;
 
-  int dae=1;
+  
+  String dae="A1";
   if(request.getParameter("dae") != null)
   {
-    dae=Integer.parseInt(request.getParameter("dae"));
+     dae = request.getParameter("dae");
   }
 
   model.addAttribute("dae", dae);
 
   String daeName = "";
-    String imsi = "";
-    switch (dae) {
-        case 1: daeName = "소설/문학"; imsi = "A1"; break;
-        case 2: daeName = "비소설/교양"; imsi = "B1"; break;
-        case 3: daeName = "경제/경영"; imsi = "C1"; break;
-        case 4: daeName = "과학/기술"; imsi = "D1"; break;
-        default: daeName = "기타"; imsi = "A1";
-    }
+    String imsi = dae;
+  switch (dae) 
+  {
+    case "A1": daeName = "소설/문학"; break;
+    case "B1": daeName = "비소설/교양"; break;
+    case "C1": daeName = "경제/경영"; break;
+    case "D1": daeName = "과학/기술"; break;
+    default: daeName = "기타";
+  }
     model.addAttribute("daeName", daeName);
 
   //String imsi=String.format("%02d", dae);

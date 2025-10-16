@@ -128,7 +128,7 @@ public class ManagerController {
   public String juumunOk(HttpSession session,
   @RequestParam("pcode") String pcode,
   @RequestParam("su") int su,
-  @RequestParam("dae") int dae,
+  @RequestParam("dae") String dae,
   @RequestParam(defaultValue = "1") int page,
   @RequestParam(defaultValue = "10") int rec)
   {
