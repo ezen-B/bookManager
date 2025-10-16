@@ -67,5 +67,25 @@
     where id=#{id}
   </update>
 
+  <insert id="jumunOk">
+    insert into jumun(pcode,su,jumunMan,writeday)
+    values(#{pcode},#{su},#{jumunMan},now())
+  </insert>
 
+  <select id="jumunList" resultType="HashMap">
+    select p.title, j.* from product p inner join jumun j
+    on p.pcode=j.pcode
+    where j.pcode like concat(#{daeCode},'%')
+  </select>
+
+  <select id="getChong" resultType="Integer">
+    select ifnull(ceil(count(*)/${rec}), 0) from product
+    where pcode like concat(#{pcode},'%')
+  </select>
+
+  <select id="stockView" resultType="com.example.demo.ProductJumunDto">
+    select p.pimg,p.title,p.su,p.pcode,j.su as jsu, j.state,j.pass,j.fail,j.id,j.writeday
+    from product p left join jumun j on p.pcode=j.pcode where p.pcode like concat(#{pcode},'%')
+    order by p.su asc limit #{index},${rec}
+  </select>
 </mapper>

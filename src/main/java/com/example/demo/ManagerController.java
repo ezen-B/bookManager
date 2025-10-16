@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -122,5 +124,30 @@ public class ManagerController {
 	  return service.upCoupon(cdto);
   }
 
+  @GetMapping("/jumunOk")
+  public String juumunOk(HttpSession session,
+  @RequestParam("pcode") String pcode,
+  @RequestParam("su") int su,
+  @RequestParam("dae") int dae,
+  @RequestParam(defaultValue = "1") int page,
+  @RequestParam(defaultValue = "10") int rec)
+  {
+      return service.jumunOk(session,pcode,su,dae,page,rec);
+  }
+
+  @GetMapping("/jumunList")
+  public @ResponseBody ArrayList<HashMap> jumunList(@RequestParam("dae") int dae)
+  {
+      return service.jumunList(dae);
+  }
+  
+  @GetMapping("/stockView")
+  public String stockView(HttpServletRequest request,
+  Model model,
+  @RequestParam(defaultValue = "1")int page,
+  @RequestParam(defaultValue = "0")int rec)
+  {
+    return service.stockView(request,model,page,rec);
+  }
 
 }
