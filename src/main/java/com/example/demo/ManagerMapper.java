@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +28,10 @@ public interface ManagerMapper {
     void delCoupon(int id);
 
     void upCoupon();
+    public void jumunOk(String userid, String pcode, int su);
+    public ArrayList<HashMap> jumunList(String daeCode);
+    public ArrayList<ProductJumunDto> stockView(String pcode, int index, int rec);
+    public int getChong(String pcode, int rec);
 
 
 }
