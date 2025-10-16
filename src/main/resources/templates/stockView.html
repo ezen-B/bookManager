@@ -50,8 +50,10 @@
 <script th:inline="javascript">
   function jumun(pcode,n)
   {
-     var su=document.getElementsByClassName("su")[n].value;
-     location = "jumunOk?pcode=" + pcode + "&su=" + su + "&dae=" + [[${dae}]] + "&page=" + [[${page}]] + "&rec=" + [[${rec}]];
+    //  var su=document.getElementsByClassName("su")[n].value;
+    //  location = "jumunOk?pcode=" + pcode + "&su=" + su + "&dae=" + [[${dae}]] + "&page=" + [[${page}]] + "&rec=" + [[${rec}]];
+    var su=document.getElementsByClassName("su")[n].value;
+    location = "jumunOk?pcode=" + pcode + "&su=" + su + "&dae=" + [[${dae}]] + "&page=" + [[${page}]] + "&rec=" + [[${rec}]];
   }
 
   window.onload=function()
@@ -83,6 +85,7 @@
   {
     document.getElementById("jumunLayer").style.visibility="visible";
 
+    var dae = document.getElementById("cla").value;
     var chk=new XMLHttpRequest
     chk.onload=function()
     {
@@ -123,8 +126,15 @@
 
         document.getElementById("jumunLayer").innerHTML=str;
     }
-   // chk.open("get","jumunList?dae="+'[[${dae}]]');
-    chk.open("get","jumunList?dae=" + '\'' + [[${dae}]] + '\'');
+     // chk.open("get","jumunList?dae="+'[[${dae}]]');
+     //chk.open("get", "jumunList?dae=" + encodeURIComponent(dae));
+     //chk.open("GET", `jumunList?dae=${encodeURIComponent(dae)}`);
+    // var dae = '[[${dae}]]';
+    // chk.open("GET", "jumunList?dae=" + encodeURIComponent(dae))
+    // chk.send();
+    
+
+    chk.open("GET", "jumunList?dae=" + encodeURIComponent(dae));
     chk.send();
   }
   
@@ -138,8 +148,6 @@
   <th:block layout:fragment="content">
     <div id="jumunLayer"></div>
     <h3> 상품현황 </h3>
-    <p>현재 페이지: [[${page}]]</p>
-    <p>한 페이지당 목록 수: [[${rec}]]</p>
     <div class="caption">
       <div id="daeclass">
         카테고리

@@ -136,7 +136,7 @@ public class ManagerController {
   }
 
   @GetMapping("/jumunList")
-  public @ResponseBody ArrayList<HashMap> jumunList(@RequestParam("dae") int dae)
+  public @ResponseBody ArrayList<HashMap> jumunList(@RequestParam("dae") String dae)
   {
       return service.jumunList(dae);
   }

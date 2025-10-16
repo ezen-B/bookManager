@@ -233,10 +233,10 @@ public String jumunOk(HttpSession session, String pcode, int su, String dae, int
   return "redirect:/stockView?dae="+dae+"&page="+page+"&rec="+rec;
 }
 
-public ArrayList<HashMap> jumunList(int dae) 
+public ArrayList<HashMap> jumunList(String dae) 
 {
-  String daeCode=String.format("%02d",dae);
-  ArrayList<HashMap> mapAll=mapper.jumunList(daeCode);
+  //String daeCode=String.format("%02d",dae);
+  ArrayList<HashMap> mapAll=mapper.jumunList(dae);
   return mapAll;
 }
 
