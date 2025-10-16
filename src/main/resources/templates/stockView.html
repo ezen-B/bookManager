@@ -46,6 +46,50 @@
     box-sizing: border-box;
     cursor: pointer;
   }
+
+  body.noScroll {
+    overflow: hidden;
+  }
+  body.noScroll::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: .5;
+    content: "";
+  }
+  #jumunLayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 20px 20px;
+    background:#fff;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1;
+    display: none;
+  }
+  #jumunLayer.open {
+    display: block;
+  }
+  #jumunLayer table {
+    width: 600px;
+  }
+  #jumunLayer .btnClose {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+  }
+  
 </style>
 <script th:inline="javascript">
   function jumun(pcode,n)
@@ -83,7 +127,8 @@
 
   function viewJumun()
   {
-    document.getElementById("jumunLayer").style.visibility="visible";
+    document.querySelector("body").classList.add("noScroll");
+    document.getElementById("jumunLayer").classList.add("open");
 
     var dae = document.getElementById("cla").value;
     var chk=new XMLHttpRequest
@@ -91,38 +136,43 @@
     {
     var jumuns=JSON.parse(chk.responseText);
 
-    var str="<table width='600' align='center' style='font-size:13px'>";
+    var str="<h3>주문내역</h3>";
+        str=str+"<table>";
+        str=str+" <colgroup> ";
+        str=str+"  <col width='*'/> ";
+        str=str+"  <col width='120px'/> ";
+        str=str+"  <col width='120px'/> ";
+        str=str+"  <col width='120px'/> ";
+        str=str+"  <col width='120px'/> ";
+        str=str+" </colgroup> ";
+        str=str+" <thead> ";
         str=str+" <tr align='center'> ";
-		str=str+"  <td> 상품명 </td> ";
-		str=str+"  <td> 주문수량 </td> ";
-		str=str+"  <td> 주문상태 </td> ";
-		str=str+"  <td> 주문일자 </td> ";
-		str=str+"  <td> 주문자 </td> ";
-		str=str+" </tr> ";
+        str=str+"  <td> 상품명 </td> ";
+        str=str+"  <td> 주문수량 </td> ";
+        str=str+"  <td> 주문상태 </td> ";
+        str=str+"  <td> 주문일자 </td> ";
+        str=str+"  <td> 주문자 </td> ";
+        str=str+" </tr> ";
+        str=str+" </thead> ";
+        str=str+" <tbody> ";
 
         for(jumun of jumuns)
         {
-            if(jumun.state==0)
-              var state="주문중";
-            else
-              var state="주문완료"
-
-            str=str+" <tr align='center'> ";
-			str=str+"  <td align='left'> "+jumun.title+" </td> ";
-			str=str+"  <td> "+jumun.su+" </td> ";
-			str=str+"  <td> "+state+" </td> ";
-			str=str+"  <td> "+jumun.writeday+" </td> ";
-			str=str+"  <td> "+jumun.jumunMan+" </td> ";
-			str=str+" </tr>";
+          if(jumun.state==0)
+            var state="주문중";
+          else
+            var state="주문완료"
+                str=str+" <tr align='center'> ";
+                str=str+"  <td align='left'> "+jumun.title+" </td> ";
+                str=str+"  <td> "+jumun.su+" </td> ";
+                str=str+"  <td> "+state+" </td> ";
+                str=str+"  <td> "+jumun.writeday+" </td> ";
+                str=str+"  <td> "+jumun.jumunMan+" </td> ";
+                str=str+" </tr>";
         }
-
-        str=str+" <tr> ";
-		str=str+"  <td colspan='5' align='center'> ";
-		str=str+"    <input type='button' value='닫기' onclick='hideLayer()'> ";
-		str=str+"  </td> ";
-		str=str+" </tr> ";
-		   
-		str=str+"</table>";
+        str=str+" </tbody> ";
+        str=str+"</table>";
+        str=str+"<input class='btnClose' type='button' value='close' onclick='hideLayer()'> ";
 
         document.getElementById("jumunLayer").innerHTML=str;
     }
@@ -140,7 +190,8 @@
   
   function hideLayer()
   {
-    document.getElementById("jumunLayer").style.visibility="hidden";
+    document.querySelector("body").classList.remove("noScroll");
+    document.getElementById("jumunLayer").classList.remove("open");
   }
 </script>
 </head>
