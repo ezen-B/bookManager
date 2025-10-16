@@ -145,7 +145,7 @@ public class ManagerController {
   public String stockView(HttpServletRequest request,
   Model model,
   @RequestParam(defaultValue = "1")int page,
-  @RequestParam(defaultValue = "0")int rec)
+  @RequestParam(defaultValue = "10")int rec)
   {
     return service.stockView(request,model,page,rec);
   }
