@@ -7,6 +7,46 @@
 <head>
 <meta charset="UTF-8">
 <title>스톡</title>
+<style>
+  .caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .caption input[type=button] {
+    padding: 0 10px;
+    width: auto;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    background: #222;
+    border: 1px solid #222;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 0 3px #999;
+    cursor: pointer;
+  }
+  .caption #daeclass {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    /* background: #f1f1f1;
+    border: 1px solid #999; */
+    font-size: 14px;
+  }
+  .caption #daeclass select {
+    padding: 0 5px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #222;
+    background: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+</style>
 <script>
   function jumun(pcode,n)
   {
@@ -87,76 +127,84 @@
 </head>
 <body>
   <th:block layout:fragment="content">
-    <section>
     <div id="jumunLayer"></div>
-    <table>
-      <caption>
-        <h3> 재고 관리 </h3>
-        <div id="daeclass">
-          종류
+    <h3> 상품현황 </h3>
+    <div class="caption">
+      <div id="daeclass">
+        카테고리
         <select id="cla" onchange="location='stockView?dae='+this.value">
           <option value="1">소설/문학</option>
           <option value="2">비소설/교양</option>
           <option value="3">경제/경영</option>
           <option value="4">과학/기술</option>
         </select>
-        </div>
-      </caption>
-      <tr colspan="3" align="right">
-        <td>
-          <input type="button" value="주문내역" onclick="viewJumun()">
-        </td>
-        <td colspan="3" algin="right">
-         <select name="pageRec" id="pageRec" onchange="recChange(this.value)">
-            <option value="10">10권</option>
-            <option value="20">20권</option>
-            <option value="30">30권</option>
-            <option value="50">50권</option>
-         </select>
+        <input type="button" value="주문내역" onclick="viewJumun()">
+      </div>
+      <div class="sorting">
+        목록 수
+        <select name="pageRec" id="pageRec" onchange="recChange(this.value)">
+          <option value="10">10권</option>
+          <option value="20">20권</option>
+          <option value="30">30권</option>
+          <option value="50">50권</option>
+        </select>
 
-         <select id="pageSel" onchange="pageMove(this.value)">
-            <th:block th:each="i:${#numbers.sequence(1,chong,1)}">
-              <option th:value="${i}" th:text="${i+'page'}"></option>
-            </th:block>
-         </select>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>이미지</td>
-        <td>상품명</td>
-        <td>재고</td>
-        <td>판매수량</td>
-        <td>주문하기</td>
-        <td>주문현황</td>
-      </tr>
-      <tr th:each=" pdto,sts: ${plist}">
-        <td><img th:src="${'/static/temp/product/'+pdto.pimg}" width="40" height="40"></td>
-        <td th:text="${pdto.title}"></td>
-        <td th:text="${pdto.su}"></td>
-        <td th:text="${pdto.pansu}"></td>
-        <td>
-          <select>
-            <th:block th:each="i:${numbers.sequence(100,1,-1)}">
-              <option th:value="${i}" th:text="${i}"></option>
-            </th:block>
-          </select>
-          <input type="button" value="주문" th:attr="|jumun('${pdto.pcode}', ${sts.index})|">
-        </td>
-        <td>
-          <th:block th:if="${pdto.writeday!=null}">
-            <span th:text="${pdto.jsu+'권'}"></span>
-            |
-            <span th:if="${pdto.state==0}" th:text="주문중"></span>
-            <span th:if="${pdto.state==1}" th:text="주문완료"></span>
+        페이지 수
+        <select id="pageSel" onchange="pageMove(this.value)">
+          <th:block th:each="i:${#numbers.sequence(1,chong,1)}">
+            <option th:value="${i}" th:text="${i+'page'}"></option>
           </th:block>
+        </select>
+      </div>
+    </div>
+    <table>
+      <colgroup>
+        <col width="150px">
+        <col width="*">
+        <col width="150px">
+        <col width="150px">
+        <col width="150px">
+        <col width="150px">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>이미지</th>
+          <th>상품명</th>
+          <th>재고</th>
+          <th>판매수량</th>
+          <th>주문하기</th>
+          <th>주문현황</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="pdto,sts: ${plist}">
+          <td><img th:src="${'/static/temp/product/'+pdto.pimg}" width="40" height="40"></td>
+          <td th:text="${pdto.title}"></td>
+          <td th:text="${pdto.su}"></td>
+          <td th:text="${pdto.pansu}"></td>
+          <td>
+            <select>
+              <th:block th:each="i:${numbers.sequence(100,1,-1)}">
+                <option th:value="${i}" th:text="${i}"></option>
+              </th:block>
+            </select>
+            <input type="button" value="주문" th:attr="|jumun('${pdto.pcode}', ${sts.index})|">
+          </td>
+          <td>
+            <th:block th:if="${pdto.writeday!=null}">
+              <span th:text="${pdto.jsu+'권'}"></span>
+              |
+              <span th:if="${pdto.state==0}" th:text="주문중"></span>
+              <span th:if="${pdto.state==1}" th:text="주문완료"></span>
+            </th:block>
 
-          <th:block th:if="${pdto.writeday==null}">
-            주문내역없음
-          </th:block>
-        </td>
-      </tr>
+            <th:block th:if="${pdto.writeday==null}">
+              주문내역없음
+            </th:block>
+          </td>
+        </tr>
+      </tbody>
     </table>
-    </section>
   </th:block>
 </body>
 </html>
