@@ -19,6 +19,7 @@ table {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  overflow-y: auto;
 }
 header {
   flex: 0;
@@ -73,6 +74,7 @@ header nav ul li:hover a {
   flex: 1;
   margin: 0 auto;
   width: 1000px;
+  margin-bottom: 100px;
 }
 #content h3 {
   padding: 20px;
