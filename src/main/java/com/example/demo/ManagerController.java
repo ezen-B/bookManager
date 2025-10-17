@@ -143,11 +143,25 @@ public class ManagerController {
   
   @GetMapping("/stockView")
   public String stockView(HttpServletRequest request,
-  Model model,
-  @RequestParam(defaultValue = "1")int page,
-  @RequestParam(defaultValue = "10")int rec)
+        Model model,
+        @RequestParam(defaultValue = "1")int page,   // page 기본값
+        @RequestParam(defaultValue = "10")int rec)   // 목록수 기본값
   {
     return service.stockView(request,model,page,rec);
   }
 
+  // 입고관리
+  @GetMapping("/jumunCheck")
+  public String jumunCheck(@RequestParam(defaultValue="A1") String dae,
+      Model model)
+  {
+    return service.jumunCheck(dae, model);
+  }
+
+  // 입고하기
+  @PostMapping("/receiptOk")
+  public String receiptOk(JumunDto jdto, HttpSession session)
+  {
+    return service.receiptOk(jdto,session);
+  }
 }

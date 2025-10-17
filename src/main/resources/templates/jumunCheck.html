@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/default"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+  body.noScroll {
+    overflow: hidden;
+  }
+  body.noScroll::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: .5;
+    content: "";
+  }
+  #reLayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 20px 20px;
+    background:#fff;
+    width: 300px;
+    height: auto;
+    overflow-y: auto;
+    z-index: 1;
+    display: none;
+  }
+  #reLayer.open {
+    display: flex;
+    flex-direction: column;
+  }
+  #reLayer input[type=text] {
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #222;
+    background: #fff;
+    box-sizing: border-box;
+    display: block;
+    outline: none;
+  }
+  /* #reLayer input[type=submit]{
+    width:102px;
+    height:34px;
+  }
+  #reLayer input[type=button]{
+    width:102px;
+    height:34px;
+  } */
+</style>
+<script>
+  function receipt(title,id,su)
+  {
+    document.querySelector("body").classList.add("noScroll");
+    document.getElementById("reLayer").classList.add("open");
+    
+    //alert(title);
+    title=title.replace(/"/g,"");
+    //alert(title);
+    // 입고 수량입력 폼을 만들기
+    document.getElementById("pro").innerText=title;
+    document.form.id.value=id;
+    document.getElementById("proSu").innerText=su+"개";
+  }
+  function hideLayer()
+  {
+    document.querySelector("body").classList.remove("noScroll");
+    document.getElementById("reLayer").classList.remove("open");
+  }
+</script>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div id="reLayer">
+    <form method="post" action="receiptOk" name="form">
+      <input type="hidden" name="id">
+      <h3> 상품입고  </h3>
+      <div class="receiptForm">
+        <table>
+          <colgroup>
+            <col width="100px">
+            <col width="*">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>상품명</th>
+              <td id="pro"></td>
+            </tr>
+            <tr>
+              <th>신청수량</th>
+              <td id="proSu"></td>
+            </tr>
+            <tr>
+              <th>불량제품</th>
+              <td><input type="text" name="fail"></td>
+            </tr>
+            <tr>
+              <th>정상제품</th>
+              <td><input type="text" name="pass"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="btnWrap">
+          <input type="submit" value="저장하기">
+          <input type="button" value="닫기" onclick="hideLayer()"> 
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <h3>주문내역</h3>
+  <table>
+    <colgroup>
+      <col width="*">
+      <col width="80px">
+      <col width="80px">
+      <col width="80px">
+      <col width="80px">
+      <col width="120px">
+      <col width="120px">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>상품명</th>
+        <th>주문수량</th>
+        <th>상태</th>
+        <th>불량</th>
+        <th>정상</th>
+        <th>주문일</th>
+        <th>입고일</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="pdto:${plist}" align="center">
+        <td th:text="${pdto.title}" align="left"></td>
+        <td th:text="${pdto.su}"></td>
+        <td th:if="${pdto.state==0}">입고전</td>
+        <td th:unless="${pdto.state==0}">입고완료</td>
+        <td th:text="${pdto.fail}"></td>
+        <td th:text="${pdto.pass}"></td>
+        <td th:text="${pdto.writeday}"></td>
+        <td th:if="${pdto.state==0}">
+          <input type="button" value="입고하기" th:onclick="receipt('[[${pdto.title}]]',[[${pdto.id}]],[[${pdto.su}]])">
+        </td>
+        <td th:if="${pdto.state==1}" th:text="${pdto.reWriteday}"></td>
+      </tr>
+    </tbody>
+  </table>
+</th:block>
+</body>
+</html>

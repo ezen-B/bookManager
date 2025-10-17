@@ -158,131 +158,146 @@ public class ManagerService {
     }
   }
 
-public String couponList(Model model,HttpSession session)
-{
-	ArrayList<CouponDto> clist = mapper.couponList();
-
-	model.addAttribute("clist", clist);
-	
-
-	// 대분류값 
-	ArrayList<DaeDto> dlist=mapper.getDae();
-	model.addAttribute("dlist", dlist);
-
-	return "/couponList";
-}
-
-public String couponOk(CouponDto cdto, HttpSession session) 
-{
-	// level별 구분
-    int level=0;
-    if(session.getAttribute("level") != null)
-	{
-		level=Integer.parseInt(session.getAttribute("level").toString());
-	}
-
-	if(level==0)  // 임시 최고관리자 == 100 / 중간 == 50
-	{
-		LocalDate today=LocalDate.now();
-
-		String month=String.format("%02d", today.getMonthValue());
-		String day=String.format("%02d", today.getMonthValue());
-		String code=today.getYear()+month+day;
-
-		int num=mapper.getCode(code);
-		code=code+String.format("%03d",num);
-
-		cdto.setCode(code);
-
-		if(cdto.getGigan().equals(""))
-		  cdto.setGigan(null);
-
-		mapper.couponOk(cdto);
-
-		return "redirect:/couponList";
-	}
-    else
-	{
-		return "redirect:/main";
-	}
-}
-
-public String delCoupon(int id) 
-{
-    mapper.delCoupon(id);
-  	
-	return "redirect:/couponList";
-}
-
-public String upCoupon(CouponDto cdto)
-{
-    if(cdto.getGigan().equals(""))
-	  cdto.setGigan(null);
-
-	mapper.upCoupon();
-
-	return "redirect:/couponList";
-}
-
-public String jumunOk(HttpSession session, String pcode, int su, String dae, int page, int rec) 
-{
-  // jumun테이블에 저장
-  String userid=session.getAttribute("userid").toString();
-  mapper.jumunOk(userid,pcode,su);
-
-  return "redirect:/stockView?dae="+dae+"&page="+page+"&rec="+rec;
-}
-
-public ArrayList<HashMap> jumunList(String dae) 
-{
-  //String daeCode=String.format("%02d",dae);
-  ArrayList<HashMap> mapAll=mapper.jumunList(dae);
-  return mapAll;
-}
-
-public String stockView(HttpServletRequest request, Model model, int page, int rec) 
-{
-  int index=(page-1)*rec;
-
-  
-  String dae="A1";
-  if(request.getParameter("dae") != null)
+  public String couponList(Model model,HttpSession session)
   {
-     dae = request.getParameter("dae");
+    ArrayList<CouponDto> clist = mapper.couponList();
+
+    model.addAttribute("clist", clist);
+    
+
+    // 대분류값 
+    ArrayList<DaeDto> dlist=mapper.getDae();
+    model.addAttribute("dlist", dlist);
+
+    return "/couponList";
   }
 
-  model.addAttribute("dae", dae);
+  public String couponOk(CouponDto cdto, HttpSession session) 
+  {
+    // level별 구분
+      int level=0;
+      if(session.getAttribute("level") != null)
+    {
+      level=Integer.parseInt(session.getAttribute("level").toString());
+    }
 
-  String daeName = "";
+    if(level==0)  // 임시 최고관리자 == 100 / 중간 == 50
+    {
+      LocalDate today=LocalDate.now();
+
+      String month=String.format("%02d", today.getMonthValue());
+      String day=String.format("%02d", today.getMonthValue());
+      String code=today.getYear()+month+day;
+
+      int num=mapper.getCode(code);
+      code=code+String.format("%03d",num);
+
+      cdto.setCode(code);
+
+      if(cdto.getGigan().equals(""))
+        cdto.setGigan(null);
+
+      mapper.couponOk(cdto);
+
+      return "redirect:/couponList";
+    }
+      else
+    {
+      return "redirect:/main";
+    }
+  }
+
+  public String delCoupon(int id) 
+  {
+      mapper.delCoupon(id);
+      
+    return "redirect:/couponList";
+  }
+
+  public String upCoupon(CouponDto cdto)
+  {
+      if(cdto.getGigan().equals(""))
+      cdto.setGigan(null);
+
+    mapper.upCoupon();
+
+    return "redirect:/couponList";
+  }
+
+  public String jumunOk(HttpSession session, String pcode, int su, String dae, int page, int rec) 
+  {
+    // jumun테이블에 저장
+    String userid=session.getAttribute("userid").toString();
+    mapper.jumunOk(userid,pcode,su);
+
+    return "redirect:/stockView?dae="+dae+"&page="+page+"&rec="+rec;
+  }
+
+  public ArrayList<HashMap> jumunList(String dae) 
+  {
+    //String daeCode=String.format("%02d",dae);
+    ArrayList<HashMap> mapAll=mapper.jumunList(dae);
+    return mapAll;
+  }
+
+  public String stockView(HttpServletRequest request, Model model, int page, int rec) 
+  {
+    int index=(page-1)*rec;  // 페이지 처리 => 1페이지당 레코드 10개 , 20개 , 30개 , 50개
+    
+    String dae="A1";
+    if(request.getParameter("dae") != null) {
+      dae = request.getParameter("dae");
+    }
+
+    model.addAttribute("dae", dae);
+
+    String daeName = "";
     String imsi = dae;
-  switch (dae) 
-  {
-    case "A1": daeName = "소설/문학"; break;
-    case "B1": daeName = "비소설/교양"; break;
-    case "C1": daeName = "경제/경영"; break;
-    case "D1": daeName = "과학/기술"; break;
-    default: daeName = "기타";
-  }
+    switch (dae) {
+      case "A1": daeName = "소설/문학"; break;
+      case "B1": daeName = "비소설/교양"; break;
+      case "C1": daeName = "경제/경영"; break;
+      case "D1": daeName = "과학/기술"; break;
+      default: daeName = "기타";
+    }
     model.addAttribute("daeName", daeName);
 
-  //String imsi=String.format("%02d", dae);
+    //String imsi=String.format("%02d", dae);
 
-  ArrayList<ProductJumunDto> plist=mapper.stockView(imsi,index,rec);
-  model.addAttribute("plist", plist);
+    ArrayList<ProductJumunDto> plist=mapper.stockView(imsi,index,rec);
+    model.addAttribute("plist", plist);
 
-  for(int i=0;i<plist.size();i++)
-  {
-    System.out.println(plist.get(i).getState());
+    for(int i=0;i<plist.size();i++)
+    {
+      System.out.println(plist.get(i).getState());
+    }
+
+    // 총페이지를 구해서 전달하기
+    int chong=mapper.getChong(imsi,rec);
+    model.addAttribute("chong", chong);
+    model.addAttribute("page", page);
+    model.addAttribute("rec", rec);
+
+    return "/stockView";
   }
 
-  int chong=mapper.getChong(imsi,rec);
-  
-  model.addAttribute("chong", chong);
-  model.addAttribute("page", page);
-  model.addAttribute("rec", rec);
+  public String jumunCheck(String dae, Model model) 
+  {
+    // String pcode="p"+String.format("%02d", dae);
+    
+    ArrayList<ProductJumunDto> plist=mapper.jumunCheck(dae);
+    model.addAttribute("plist",plist);
+    
+    return "/jumunCheck";
+  }
 
-  return "/stockView";
-}
-
-
+  public String receiptOk(JumunDto jdto, HttpSession session) 
+  {
+    String userid=session.getAttribute("userid").toString();
+    jdto.setAuditMan(userid);
+    
+    mapper.receiptOk(jdto);
+    
+    return "redirect:/jumunCheck";
+  }
 }

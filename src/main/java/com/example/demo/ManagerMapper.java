@@ -16,22 +16,17 @@ public interface ManagerMapper {
   public void upMemberOk(AdminMemberDto mdto);
   public boolean useridOk(String userid);
 
-
 	ArrayList<CouponDto> couponList();
+  ArrayList<DaeDto> getDae();
+  int getCode(String code);
+  void couponOk(CouponDto cdto);
+  void delCoupon(int id);
+  void upCoupon();
+  public void jumunOk(String userid, String pcode, int su);
+  public ArrayList<HashMap> jumunList(String daeCode);
+  public ArrayList<ProductJumunDto> stockView(String pcode, int index, int rec);
+  public int getChong(String pcode, int rec);
 
-    ArrayList<DaeDto> getDae();
-
-    int getCode(String code);
-
-    void couponOk(CouponDto cdto);
-
-    void delCoupon(int id);
-
-    void upCoupon();
-    public void jumunOk(String userid, String pcode, int su);
-    public ArrayList<HashMap> jumunList(String daeCode);
-    public ArrayList<ProductJumunDto> stockView(String pcode, int index, int rec);
-    public int getChong(String pcode, int rec);
-
-
+  public ArrayList<ProductJumunDto> jumunCheck(String dae);
+  public void receiptOk(JumunDto jdto);
 }

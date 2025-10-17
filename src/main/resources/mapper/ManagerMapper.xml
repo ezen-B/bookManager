@@ -88,4 +88,17 @@
     from product p left join jumun j on p.pcode=j.pcode where p.pcode like concat(#{pcode},'%')
     order by p.su asc limit #{index},${rec}
   </select>
+
+  <select id="jumunCheck" resultType="com.example.demo.ProductJumunDto">
+    select p.title , j.* 
+    from product p inner join jumun j
+    on p.pcode=j.pcode 
+    where j.pcode like concat(#{pcode},'%')  
+  </select>
+
+  <update id="receiptOk" parameterType="com.example.demo.JumunDto">
+    update jumun
+    set state=1 , pass=#{pass} , fail=#{fail} , auditMan=#{auditMan} , reWriteday=now()
+    where id=#{id}
+  </update>
 </mapper>
